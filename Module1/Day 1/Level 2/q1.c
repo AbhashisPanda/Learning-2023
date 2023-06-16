@@ -1,23 +1,20 @@
 #include <stdio.h>
+
+int findGreatest(int num1, int num2, int num3) {
+  if (num1 >= num2 && num1 >= num3) {
+    return num1;
+  } else if (num2 >= num1 && num2 >= num3) {
+    return num2;
+  } else {
+    return num3;
+  }
+}
+
 int main() {
-     int a,b,c ;
-     printf("Enter three numbers\n");
-     scanf("%d,%d,%d\n",&a,&b,&c);
-    if (a > b) {
-		if (a > c) {
-			printf("Biggest number %d\n",a);
-		}
-		else {
-			printf("Biggest number %d\n",c);
-		}
-    }
-    else if(b > a) {
-        if (b > c) {
-			printf("Biggest number %d\n",b);
-		}
-		else {
-			printf("Biggest number %d\n",c);
-		}
-    }
-	return 0;
+  int num1, num2, num3;
+  printf("Enter three numbers: ");
+  scanf("%d %d %d", &num1, &num2, &num3);
+  int greatest = findGreatest(num1, num2, num3);
+  printf("The greatest number is %d\n", greatest);
+  return 0;
 }
