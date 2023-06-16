@@ -12,15 +12,16 @@ int isVowel(char c) {
     case 'O':
     case 'u':
     case 'U':
-      return 1; // The character is a vowel
+      return 1; 
     default:
-      return 0; // The character is not a vowel
+      return 0; 
   }
 }
 
 int main() {
   char c;
-  scanf("%c",c);
+  printf("Enter a character: ");
+  scanf("%c", &c);
   int is_vowel = isVowel(c);
   if (is_vowel) {
     printf("Vowel\n");
