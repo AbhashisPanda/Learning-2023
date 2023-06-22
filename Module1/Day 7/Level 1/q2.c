@@ -8,11 +8,10 @@ struct Student {
 };
 
 void initializeStudents(struct Student *students, int numStudents) {
-    char input[100];
     for (int i = 0; i < numStudents; i++) {
-        printf("Enter the data for student %d: ", i + 1);
-        fgets(input, sizeof(input), stdin);
-        sscanf(input, "%d %s %f", &students[i].rollno, students[i].name, &students[i].marks);
+        students[i].rollno = 0;
+        students[i].name[0] = '\0';
+        students[i].marks = 0.0;
     }
 }
 
@@ -27,7 +26,7 @@ int main() {
     int numStudents;
     printf("Enter the number of students: ");
     scanf("%d", &numStudents);
-    getchar(); 
+    getchar();
 
     struct Student *students = malloc(numStudents * sizeof(struct Student));
 

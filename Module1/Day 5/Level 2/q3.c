@@ -1,78 +1,56 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <regex.h>
 
-#define MAX_NAME_LENGTH 50
+int validateEmail(const char *email) {
+    regex_t regex;
+    int reti;
 
-typedef struct {
-    char name[MAX_NAME_LENGTH];
-    int marks;
-} Student;
+ 
+    char pattern[] = "^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$";
 
-void read_students(Student *students, int n) {
-    int i;
-    for (i = 0; i < n; i++) {
-        printf("Enter the name of student %d: ", i+1);
-        scanf("%s", students[i].name);
-        printf("Enter the marks of student %d: ", i+1);
-        scanf("%d", &students[i].marks);
+    
+    reti = regcomp(&regex, pattern, REG_EXTENDED);
+    if (reti) 
+    {
+        printf("Could not compile regex\n");
+        return -1;
     }
-}
 
-void write_students(Student *students, int n) {
-    int i;
-    printf("Name\tMarks\n");
-    for (i = 0; i < n; i++) {
-        printf("%s\t%d\n", students[i].name, students[i].marks);
-    }
-}
+    reti = regexec(&regex, email, 0, NULL, 0);
+    regfree(&regex);
 
-float compute_average_marks(Student *students, int n) {
-    int i;
-    int total_marks = 0;
-    for (i = 0; i < n; i++) {
-        total_marks += students[i].marks;
-    }
-    return (float)total_marks / n;
-}
-
-void print_students_above_average(Student *students, int n, float average_marks) {
-    int i;
-    printf("Students above average:\n");
-    for (i = 0; i < n; i++) {
-        if (students[i].marks > average_marks) {
-            printf("%s\t%d\n", students[i].name, students[i].marks);
-        }
-    }
-}
-
-void print_students_below_average(Student *students, int n, float average_marks) {
-    int i;
-    printf("Students below average:\n");
-    for (i = 0; i < n; i++) {
-        if (students[i].marks < average_marks) {
-            printf("%s\t%d\n", students[i].name, students[i].marks);
-        }
+    if (!reti) 
+    {
+        return 0;
+    } 
+    else if (reti == REG_NOMATCH) 
+    {
+        return -1; 
+    } 
+    else 
+    {
+        char error_message[100];
+        regerror(reti, &regex, error_message, sizeof(error_message));
+        printf("Regex match failed: %s\n", error_message);
+        return -1;
     }
 }
 
 int main() {
-    int n;
+    const char *emails[] = {
+        "hello@example.com",
+        "hello@example.org",
+        "mail2friend\"@hi5.com",
+        "mail2admin\"@Prog.org",
+        "guest_user@example.in",
+        "guest.user@example.com"
+    };
+    int numEmails = sizeof(emails) / sizeof(emails[0]);
 
-    printf("Enter number of students: ");
-    scanf("%d", &n);
-
-    Student *students = malloc(n * sizeof(Student));
-
-    read_students(students, n);
-    write_students(students, n);
-
-    float avg_marks = compute_average_marks(students, n);
-    printf("Average marks: %.2f\n", avg_marks);
-
-    print_students_above_average(students, n, avg_marks);
-    print_students_below_average(students, n, avg_marks);
-
-    free(students);
+    for (int i = 0; i < numEmails; i++) {
+        int result = validateEmail(emails[i]);
+        printf("%s: %s\n", emails[i], (result == 0) ? "Valid" : "Invalid");
+    }
 
     return 0;
 }

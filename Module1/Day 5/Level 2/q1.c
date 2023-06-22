@@ -2,66 +2,52 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
-    char id[3];
-    float temperature;
-    int humidity;
-    int light_intensity;
-} SensorData;
+struct Date {
+    int day;
+    int month;
+    int year;
+};
 
-void parse_data(char *data_string, SensorData *sensor_data) {
- 
-    char *sensor_info = strtok(data_string, "-");
+int getNumberOfDays(struct Date startDate, struct Date endDate) {
+    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int totalDays = 0;
 
-   
-    while (sensor_info != NULL) {
-       
-        char *sensor_id = strtok(sensor_info, ":");
-        char *data = strtok(NULL, ":");
-
-      
-        SensorData sensor;
-
-       
-        strcpy(sensor.id, sensor_id);
-
-     
-        char *token = strtok(data, ",");
-        while (token != NULL) {
-            char *key = token;
-            char *value = strchr(token, ':') + 1;
-
-            if (strcmp(key, "T") == 0) {
-                sensor.temperature = atof(value);
-            } else if (strcmp(key, "H") == 0) {
-                sensor.humidity = atoi(value);
-            } else if (strcmp(key, "L") == 0) {
-                sensor.light_intensity = atoi(value);
-            }
-
-            token = strtok(NULL, ",");
-        }
-        *sensor_data++ = sensor;
-        sensor_info = strtok(NULL, "-");
+    for (int year = startDate.year; year < endDate.year; year++) {
+        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+            totalDays += 366;
+        else
+            totalDays += 365;
     }
+
+    for (int month = 1; month < startDate.month; month++)
+        totalDays -= daysInMonth[month - 1];
+
+    totalDays -= startDate.day - 1;
+
+    for (int month = 1; month < endDate.month; month++)
+        totalDays += daysInMonth[month - 1];
+
+    totalDays += endDate.day;
+
+    if ((startDate.year % 4 == 0 && startDate.year % 100 != 0) || (startDate.year % 400 == 0))
+        if (startDate.month <= 2 && (endDate.month > 2 || (endDate.month == 2 && endDate.day == 29)))
+            totalDays++;
+
+    return totalDays;
 }
 
 int main() {
-    char data_string[100];
-    SensorData sensor_data[1];
+    struct Date startDate;
+    struct Date endDate;
 
-	printf("Enter the data string: ");
-    fgets(data_string, 100, stdin);
-    data_string[strcspn(data_string, "\n")] = 0;
+    char start_date_str[] = "10/04/2015";
+    sscanf(start_date_str, "%d/%d/%d", &startDate.day, &startDate.month, &startDate.year);
 
-    parse_data(data_string, sensor_data);
+    char end_date_str[] = "10/04/2016";
+    sscanf(end_date_str, "%d/%d/%d", &endDate.day, &endDate.month, &endDate.year);
 
-    printf("Sensor Info:\n");
-    printf("---------------------\n");
-    printf("Sensor ID: %s\n", sensor_data[0].id);
-    printf("Temperature: %.1f C\n", sensor_data[0].temperature);
-    printf("Humidity: %d\n", sensor_data[0].humidity);
-    printf("Light Intensity: %d%%\n", sensor_data[0].light_intensity);
+    int number_of_days = getNumberOfDays(startDate, endDate);
+    printf("Number of days elapsed: %d\n", number_of_days);
 
     return 0;
 }

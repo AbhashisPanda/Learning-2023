@@ -1,61 +1,19 @@
 #include <stdio.h>
 
-struct Complex {
-    double real; 
-    double imag; 
-};
-
-
-void readComplex(struct Complex *comp) {
-    printf("Enter real part: ");
-    scanf("%lf", &comp->real);
-
-    printf("Enter imaginary part: ");
-    scanf("%lf", &comp->imag);
-}
-
-void writeComplex(struct Complex comp) {
-    printf("%.2f + %.2fi\n", comp.real, comp.imag);
-}
-
-
-struct Complex add(struct Complex c1, struct Complex c2) {
-    struct Complex result;
-
-    result.real = c1.real + c2.real;
-    result.imag = c1.imag + c2.imag;
-
-    return result;
-}
-
-
-struct Complex multiply(struct Complex c1, struct Complex c2) {
-    struct Complex result;
-
-    result.real = c1.real * c2.real - c1.imag * c2.imag;
-    result.imag = c1.real * c2.imag + c1.imag * c2.real;
-
-    return result;
+int convert_string_to_integer(const char* string) {
+  int integer = 0;
+  for (int i = 0; string[i] != '\0'; i++) {
+    int value = string[i] - '0';
+    integer = integer * 10 + value;
+  }
+  return integer;
 }
 
 int main() {
-    struct Complex c1, c2, sum, product;
+  const char* string = "5278";
+  int integer = convert_string_to_integer(string);
+  printf("Input String: %s\n", string);
+  printf("Output Integer: %d\n", integer);
 
-    
-    printf("Enter the first complex number:\n");
-    readComplex(&c1);
-    printf("Enter the second complex number:\n");
-    readComplex(&c2);
-
-   
-    sum = add(c1, c2);
-    printf("Sum: ");
-    writeComplex(sum);
-
-  
-    product = multiply(c1, c2);
-    printf("Product: ");
-    writeComplex(product);
-
-    return 0;
+  return 0;
 }

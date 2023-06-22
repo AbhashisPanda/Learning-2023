@@ -1,37 +1,35 @@
 #include <stdio.h>
-#include <math.h>
+#include <string.h>
 
-typedef struct {
-    float x;
-    float y;
-    float z;
-} Point;
-
-float distance(Point p1, Point p2) {
-    float dx = p2.x - p1.x;
-    float dy = p2.y - p1.y;
-    float dz = p2.z - p1.z;
-    return sqrt(dx*dx + dy*dy + dz*dz);
+void rotateString(char *str, int number_of_characters, char *direction) {
+    int len = strlen(str);
+    number_of_characters = number_of_characters % len; 
+    
+    if (strcmp(direction, "left") == 0) {
+        char temp[number_of_characters + 1];
+        strncpy(temp, str, number_of_characters);
+        temp[number_of_characters] = '\0';
+        memmove(str, str + number_of_characters, len - number_of_characters + 1);
+        strcat(str, temp);
+    } 
+    else if (strcmp(direction, "right") == 0) {
+        char temp[number_of_characters + 1];
+        strncpy(temp, str + len - number_of_characters, number_of_characters);
+        temp[number_of_characters] = '\0';
+        memmove(str + number_of_characters, str, len - number_of_characters + 1);
+        strncpy(str, temp, number_of_characters);
+    }
 }
 
 int main() {
-    Point p1, p2;
+    char str[] = "abcdxyz";
+    int number_of_characters = 2;
+    char direction[] = "left";
 
-    printf("Enter coordinates of the first point: ");
-    scanf("%f", &p1.x);
-    scanf("%f", &p1.y);
-    scanf("%f", &p1.z);
+    printf("Original string: %s\n", str);
 
-    printf("Enter the coordinates of the second point: ");
-    scanf("%f", &p2.x);
-    scanf("%f", &p2.y);
-    scanf("%f", &p2.z);
-
-  
-    float dist = distance(p1, p2);
-
-  
-    printf("Distance:%.2f\n",dist);
+    rotateString(str, number_of_characters, direction);
+    printf("Rotated string: %s\n", str);
 
     return 0;
 }

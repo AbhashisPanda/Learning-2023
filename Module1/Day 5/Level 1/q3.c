@@ -1,45 +1,38 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-struct TimePeriod {
-    int h;
-    int m;
-    int s;
-};
+unsigned long compute_total_seconds(const char* time_string) {
+  char* token;
+  char* remainder;
+  unsigned long hours, minutes, seconds;
 
+  char* time_copy = strdup(time_string);  
+  token = strtok(time_copy, ":");
+  hours = strtoul(token, &remainder, 10);
 
-struct TimePeriod diffTimePeriod(struct TimePeriod t1, struct TimePeriod t2) {
-    struct TimePeriod diff;
+  token = strtok(NULL, ":");
+  minutes = strtoul(token, &remainder, 10);
 
+  token = strtok(NULL, ":");
+  seconds = strtoul(token, &remainder, 10);
 
-    int s1 = t1.h * 3600 + t1.m * 60 + t1.s;
-    int s2 = t2.h * 3600 + t2.m * 60 + t2.s;
-    int diffSeconds = s1 > s2 ? s1 - s2 : s2 - s1;
+  free(time_copy);  
 
-
-    diff.h = diffSeconds / 3600;
-    diffSeconds %= 3600;
-    diff.m = diffSeconds / 60;
-    diff.s = diffSeconds % 60;
-
-    return diff;
+  unsigned long total_seconds = hours * 3600 + minutes * 60 + seconds;
+  return total_seconds;
 }
 
 int main() {
-    struct TimePeriod t1, t2, diff;
+  const char* time_string1 = "10:12:50";
+  unsigned long total_seconds1 = compute_total_seconds(time_string1);
+  printf("Time String: %s\n", time_string1);
+  printf("Total Seconds: %lu\n", total_seconds1);
 
+  const char* time_string2 = "13:10:40";
+  unsigned long total_seconds2 = compute_total_seconds(time_string2);
+  printf("Time String: %s\n", time_string2);
+  printf("Total Seconds: %lu\n", total_seconds2);
 
-    printf("Enter the first time period (hours minutes seconds): ");
-    scanf("%d %d %d", &t1.h, &t1.m, &t1.s);
-
-
-    printf("Enter the second time period (hours minutes seconds): ");
-    scanf("%d %d %d", &t2.h, &t2.m, &t2.s);
-
-
-    diff = diffTimePeriod(t1, t2);
-
-
-    printf("The difference between the two time periods is %d hours, %d minutes, and %d seconds.\n", diff.hours, diff.m, diff.s);
-
-    return 0;
+  return 0;
 }

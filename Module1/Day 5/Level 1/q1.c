@@ -1,28 +1,36 @@
 #include <stdio.h>
+#include <ctype.h>
 
-struct Box {
-    double l;
-    double w;
-    double h;
-};
+void toggle_case(char* string) {
+  for (int i = 0; string[i] != '\0'; i++) {
+    if (isupper(string[i])) {
+      string[i] = tolower(string[i]);
+    } else if (islower(string[i])) {
+      string[i] = toupper(string[i]);
+    }
+  }
+}
 
 int main() {
-    struct Box myBox = {2.0, 3.0, 4.0};
-    struct Box *ptr = &myBox;
+  char string[] = "Hello World";
+  toggle_case(string);
+  printf("Output 1: %s\n", string);
 
+  char string2[] = "Hello World";
+  toggle_case(string2);
+  printf("Output 2: %s\n", string2);
 
-    double vol = (*ptr).l * (*ptr).w * (*ptr).h;
-    double sa = 2 * ((*ptr).l * (*ptr).w + (*ptr).w * (*ptr).h + (*ptr).h * (*ptr).l);
+  char string3[] = "a+B";
+  toggle_case(string3);
+  printf("Output 3: %s\n", string3);
 
-    printf("Volume of the box: %.2f\n", vol);
-    printf("Total surface area of the box: %.2f\n", sa);
+  char string4[] = "A+B";
+  toggle_case(string4);
+  printf("Output 4: %s\n", string4);
 
+  char string5[] = "Shivam";
+  toggle_case(string5);
+  printf("Output 5: %s\n", string5);
 
-    vol = ptr->l * ptr->w * ptr->h;
-    sa = 2 * (ptr->l * ptr->w + ptr->w * ptr->h + ptr->h * ptr->l);
-
-    printf("Volume: %.2f\n", vol);
-    printf("Surface area: %.2f\n", sa);
-
-    return 0;
+  return 0;
 }
