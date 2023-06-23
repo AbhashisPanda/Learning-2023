@@ -21,7 +21,6 @@ int main() {
     printf("Enter the Marks of Chemistry: ");
     scanf("%f", &chemistryMarks);
     
-    // Calculate total marks and percentage
     totalMarks = physicsMarks + mathMarks + chemistryMarks;
     percentage = (totalMarks / 300) * 100;
     

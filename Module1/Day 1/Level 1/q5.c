@@ -3,13 +3,13 @@
 int bit_operations(int num, int oper_type) {
     switch (oper_type) {
         case 1:
-            num |= (1 << 0);   // Set 1st bit
+            num |= (1 << 0);
             break;
         case 2:
-            num &= ~(1 << 31);  // Clear 31st bit
+            num &= ~(1 << 31); 
             break;
         case 3:
-            num ^= (1 << 15);  // Toggle 16th bit
+            num ^= (1 << 15); 
             break;
         default:
             printf("Error: Invalid operation type.\n");

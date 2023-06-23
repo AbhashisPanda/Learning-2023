@@ -1,13 +1,22 @@
-#include <stdio.h>
-int main() {
-     int a,b ;
-     printf("Enter two numbers\n");
-     scanf("%d,%d\n",&a,&b);
-    if (a > b) {
-       printf("Biggest number %d\n",a);
+#include <stdio.h>  
+   
+int main() {  
+    int a, b;  
+    printf("Please Enter values\n");  
+    scanf("%d %d", &a, &b);  
+    
+    if(a > b) 
+    {
+        printf("%d is Largest\n", a);          
+    } 
+    else if (b > a)
+    { 
+        printf("%d is Largest\n", b);  
+    } 
+    else 
+    {
+	printf("Both are Equal\n");
     }
-    else if(b > a) {
-        printf("Biggest number %d\n",b);
-    }
-	return 0;
+   
+    return 0;  
 }
